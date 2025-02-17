@@ -309,28 +309,119 @@ db.libros.find(
 }
 )
 ```
- *** Sintaxis ***
+*** Sintaxis ***
 
- db.coleccion.find.(filtro,columnas)
+db.coleccion.find.(filtro,columnas)
 ```json
- db.libros.find({},{titulo:1})
- ```
+db.libros.find({},{titulo:1})
+```
 
- 1. Seleccionar todos los documentos, mostrando el titulo y la editorial
- ```json
+1. Seleccionar todos los documentos, mostrando el titulo y la editorial
+```json
 db.libros.find({},{titulo:1,editorial:1})
 
 
 db.libros.find({},{titulo:1,editorial:1,_id:0})
- ```
+```
 
- *** sin id ***
-  ```json
+*** sin id ***
+```json
 db.libros.find({},{titulo:1,editorial:1,_id:0})
- ```
+```
 
- 2. Seleccionar todos los documentos de la editorial planeta, solamente el titulo y la editorial
-  ```json
+2. Seleccionar todos los documentos de la editorial planeta, solamente el titulo y la editorial
+```json
 db.libros.find({editorial:'Planeta'},{titulo:1,editorial:1,_id:0})
- ```
- 
+```
+## Operador exists( Permiute saber si un campo se encuentra o no en un documento)
+
+```json
+db.libros.find(
+    {
+        editorial:{$exists:true}
+    }
+)
+```
+```json
+db.libros.insertOne(
+    {
+        _id:10,
+        titulo:'Mongo en entornos graficos',
+        editorial:'Terra',
+        precio:125
+    }
+)
+```
+
+1. Mostrar todos los documentos que no contengan el campo cantidad
+```json
+db.libros.find(
+    {
+        cantidad:{$exists:false}
+    }
+)
+```
+### Operador Type (Permite preguntar si un determinado campo corresponde con un tipo)###
+[Operador Type](https://www.mongodb.com/docs/manual/reference/operator/query/type/#mongodb-query-op.-type)
+
+1. Mostrar todos los docuemntos donde el precio sea dobles
+
+```json
+db.libros.find({precio:{$type:1}})
+```
+```json
+db.libros.find({precio:{$type:16}})
+```
+```json
+db.libros.insertOne(
+{
+    _id:11,
+    titulo:"IA",
+    editorial:"Terra",
+    precio:125.4,
+    cantidad:20
+})
+```
+```json
+db.libros.insertMany([
+ {
+    _id: 12,
+    titulo: 'IA',
+    editorial: 'Terra',
+    precio: 125, 
+	cantidad: 20
+  },
+  {
+    _id: 13,
+    titulo: 'Python para todos',
+    editorial: 2001,
+    precio: 200, 
+	cantidad:30
+}]
+)
+```
+```json
+db.libros.find({_id:13})
+```
+
+1. Seleccionar los documentos donde la editorial sea tipo entero
+```json
+db.libros.find({editorial:{$type:16}})
+```
+2. Seleccionar todos los documentos donde la editorial sea string
+```json
+db.libros.find({editorial:{$type:"string"}})
+```
+
+## Practica de consulta
+1.Instalar las tools de mongodb 
+
+[DatabaseTools](https://www.mongodb.com/try/download/database-tools)
+
+2. Cargar el json empleados(Debemos estar ubicados en la carpeta donde se encuentra el JSON empleados) 
+
+- En local:
+ comando:
+ mongoimport --db curso --collection empleados --file empleados.json
+ -Doker:
+ mongoimport --db curso --collection empleados --file empleados.json --port 27018
