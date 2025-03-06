@@ -596,7 +596,7 @@ use db5
 db.createCollection("ejemplo")
 db.ejemplo.insertOne(
 {
-    nombre:"Chapuin"
+     nombre:"Chapuin"
 }
 )
 db.ejemplo.find({})
